@@ -1,0 +1,28 @@
+{
+  "name": "react-native-ezviz-player",
+  "version": "1.0.0",
+  "description": "react Native集成萤石云播放",
+  "react-native": "index",
+  "source": "index",
+  "repository": "https://github.com/wangzhi17/react-native-ezviz-player",
+  "author": "Zhi Wang <wangzhi0114@163.com> (https://github.com/wangzhi17)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wangzhi17/react-native-ezviz-player/issues"
+  },
+  "homepage": "https://github.com/wangzhi17/react-native-ezviz-player#readme",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "RCTEzvizPlayerSpecs",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "cn.wangzhi17.ezviz.player"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+buildscript {
+  ext.safeExtGet = {prop, fallback ->
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  }
+  repositories {
+    google()
+    gradlePluginPortal()
+  }
+  dependencies {
+    classpath("com.android.tools.build:gradle:7.1.1")
+  }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.facebook.react'
+apply plugin: "org.jetbrains.kotlin.android"
+
+android {
+  compileSdkVersion safeExtGet('compileSdkVersion', 31)
+  namespace "cn.wangzhi17.ezviz.player"
+  defaultConfig {
+    minSdkVersion safeExtGet('minSdkVersion', 21)
+    targetSdkVersion safeExtGet('targetSdkVersion', 31)
+    buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true")
+  }
+}
+
+repositories {
+  maven {
+    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+    url "$projectDir/../node_modules/react-native/android"
+  }
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  implementation 'com.facebook.react:react-native:+'
+  /*萤石SDK核心模块，必须依赖*/
+  implementation 'io.github.ezviz-open:ezviz-sdk:5.12'
+  /*视频通话模块，按需使用*/
+  implementation 'io.github.ezviz-open:videotalk:1.3.0'
+  implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+  implementation 'com.google.code.gson:gson:2.8.5'
+}
