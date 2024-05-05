@@ -1,7 +1,7 @@
 {
   "name": "react-native-ezviz-player",
-  "version": "1.0.0",
-  "description": "react Native集成萤石云播放",
+  "version": "1.0.1",
+  "description": "React Native集成萤石云播放和对讲功能",
   "keywords": [
     "ezviz",
     "player",

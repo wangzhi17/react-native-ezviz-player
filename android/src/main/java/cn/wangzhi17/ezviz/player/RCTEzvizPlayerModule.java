@@ -1,5 +1,6 @@
 package cn.wangzhi17.ezviz.player;
 
+import android.app.Application;
 import android.os.Handler;
 import android.os.Message;
 
@@ -29,6 +30,19 @@ public class RCTEzvizPlayerModule extends NativeEzvizVoiceTalkSpec implements Ha
     @Override
     public String getName() {
         return Name;
+    }
+
+    @Override
+    public void initSDK(String appKey, Promise promise) {
+        Application application = (Application) reactContext.getBaseContext();
+        EZOpenSDK.initLib(application, appKey);
+        promise.resolve(true);
+    }
+
+    @Override
+    public void destroySDK(Promise promise) {
+        EZOpenSDK.finiLib();
+        promise.resolve(true);
     }
 
     public RCTEzvizPlayerModule(ReactApplicationContext reactContext) {
