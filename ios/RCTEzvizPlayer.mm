@@ -103,7 +103,7 @@ using namespace facebook::react;
 
 @end
 
-Class<RCTComponentViewProtocol>RCTEzvizPlayerCls(void)
+Class<RCTComponentViewProtocol>EzvizPlayerCls(void)
 {
     return RCTEzvizPlayer.class;
 }

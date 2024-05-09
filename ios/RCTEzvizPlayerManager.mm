@@ -5,111 +5,42 @@
 //  Created by 汪志 on 2024/5/7.
 //
 
+#import <Foundation/Foundation.h>
+#import "RCTEzvizPlayerManager.h"
 #import "RCTEzvizPlayer.h"
+#import "RCTEzvizPlayerSpecs/RCTEzvizPlayerSpecs.h"
 
-#import <react/renderer/components/RCTEzvizPlayerSpecs/ComponentDescriptors.h>
-#import <react/renderer/components/RCTEzvizPlayerSpecs/EventEmitters.h>
-#import <react/renderer/components/RCTEzvizPlayerSpecs/Props.h>
-#import "react/renderer/components/RCTEzvizPlayerSpecs/RCTComponentViewHelpers.h"
+@implementation RCTEzvizPlayerManager
 
-#import "RCTFabricComponentsPlugins.h"
+RCT_EXPORT_MODULE(EzvizPlayer)
 
-using namespace facebook::react;
+- (UIView *)view
+{
+    return [RCTEzvizPlayer new];
+}
 
-@interface RCTEzvizPlayer() <RCTEzvizPlayerViewProtocol,EZPlayerDelegate>
+RCT_CUSTOM_VIEW_PROPERTY(accessToken,NSString,RCTEzvizPlayer)
+{
+    view.accessToken = [RCTConvert NSString:json];
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(deviceSerial,NSString,RCTEzvizPlayer)
+{
+    view.deviceSerial = [RCTConvert NSString:json];
+}
+RCT_CUSTOM_VIEW_PROPERTY(verifyCode,NSString,RCTEzvizPlayer)
+{
+    view.verifyCode = [RCTConvert NSString:json];
+}
+RCT_CUSTOM_VIEW_PROPERTY(cameraNo,NSInteger,RCTEzvizPlayer)
+{
+    view.cameraNo = json == nil ? 1 : [RCTConvert NSInteger:json];
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeEzvizVoiceTalkSpecJSI>(params);
+}
 
 @end
-
-@implementation RCTEzvizPlayer {
-    EZPlayer *_player;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        static const auto defaultProps = std::make_shared<const EzvizPlayerProps>();
-        _props = defaultProps;
-    }
-    return self;
-}
-
-- (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps
-{
-    [super updateProps:props oldProps:oldProps];
-}
-
-- (void)setDeviceSerial:(NSString *) deviceSerial {
-    _deviceSerial = deviceSerial;
-}
-
-- (void)setCameraNo:(NSInteger) cameraNo {
-    _cameraNo = cameraNo;
-}
-
-- (void)setVerifyCode:(NSString *) verifyCode {
-    _verifyCode = verifyCode;
-}
-
-- (void)setAccessToken:(NSString *) accessToken {
-  _accessToken = accessToken;
-  [EZOpenSDK setAccessToken:accessToken];
-}
-
-- (void)closeSound {
-    if (_player) {
-        [_player closeSound];
-    }
-}
-
-- (void)createPlayer {
-    if (_player == nil && _deviceSerial != nil && _cameraNo > 0) {
-        _player = [EZOpenSDK createPlayerWithDeviceSerial:_deviceSerial cameraNo:_cameraNo];
-        _player.delegate = self;
-        self.contentView = self;
-        [_player setPlayerView:self];
-        [_player startRealPlay];
-    }
-}
-
-- (void)openSound {
-    if (_player) {
-        [_player openSound];
-    }
-}
-
-- (void)releasePlayer {
-    if (_player) {
-        [EZOpenSDK releasePlayer:_player];
-        _player = nil;
-    }
-}
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-    return concreteComponentDescriptorProvider<EzvizPlayerComponentDescriptor>();
-}
-
-- (void)handleCommand:(nonnull const NSString *)commandName args:(nonnull const NSArray *)args {
-    RCTEzvizPlayerHandleCommand(self, commandName, args);
-}
-
-- (void)player:(EZPlayer *)player didPlayFailed:(NSError *)error
-{
-    if (_eventEmitter) {
-        auto viewEventEmitter = std::static_pointer_cast<const EzvizPlayerEventEmitter >(_eventEmitter);
-        facebook::react::EzvizPlayerEventEmitter::OnPlayFailed data = {
-            .errorCode = int(error.code),
-            .solution = std::string([[error.userInfo valueForKey:@"ezvizErrorSolution"] UTF8String]),
-            .description = std::string([[error.userInfo valueForKey:@"NSLocalizedDescription"] UTF8String] )
-        };
-        viewEventEmitter->onPlayFailed(data);
-    }
-}
-
-
-@end
-
-Class<RCTComponentViewProtocol>RCTEzvizPlayerCls(void)
-{
-    return RCTEzvizPlayer.class;
-}
