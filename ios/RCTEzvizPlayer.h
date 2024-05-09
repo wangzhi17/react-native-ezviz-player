@@ -9,11 +9,19 @@
 #define RCTEzvizPlayer_h
 
 #import <UIKit/UIKit.h>
-#import <React/RCTComponent.h>
-#import <React/RCTView.h>
+#import <React/RCTViewComponentView.h>
 
-@interface RCTEzvizPlayer : RCTView
+#import <EZOpenSDKFramework/EZPlayer.h>
+#import <EZOpenSDKFramework/EZOpenSDK.h>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface RCTEzvizPlayer : RCTViewComponentView
+@property (nonatomic, copy) NSString *  deviceSerial;
+@property (nonatomic, copy) NSString *  verifyCode;
+@property (nonatomic, copy) NSString *  accessToken;
+@property (nonatomic, assign) NSInteger  cameraNo;
 
 @end
 
+NS_ASSUME_NONNULL_END
 #endif /* RCTEzvizPlayer_h */

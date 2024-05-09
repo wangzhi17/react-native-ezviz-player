@@ -1,10 +1,3 @@
-//
-//  RCTEzvizPlayerManager.mm
-//  react-native-ezviz-player
-//
-//  Created by 汪志 on 2024/5/7.
-//
-
 #import "RCTEzvizPlayer.h"
 
 #import <react/renderer/components/RCTEzvizPlayerSpecs/ComponentDescriptors.h>
@@ -80,6 +73,7 @@ using namespace facebook::react;
 
 - (void)releasePlayer {
     if (_player) {
+        [_player stopRealPlay];
         [EZOpenSDK releasePlayer:_player];
         _player = nil;
     }
