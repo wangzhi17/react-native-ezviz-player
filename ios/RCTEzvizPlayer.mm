@@ -29,6 +29,20 @@ using namespace facebook::react;
 
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<EzvizPlayerProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<EzvizPlayerProps const>(props);
+    if (oldViewProps.accessToken != newViewProps.accessToken) {
+        _accessToken = [[NSString alloc] initWithCString:newViewProps.accessToken.c_str() encoding:NSASCIIStringEncoding];
+    }
+    if (oldViewProps.deviceSerial != newViewProps.deviceSerial) {
+        _deviceSerial = [[NSString alloc] initWithCString:newViewProps.deviceSerial.c_str() encoding:NSASCIIStringEncoding];
+    }
+    if (oldViewProps.verifyCode != newViewProps.verifyCode) {
+        _verifyCode = [[NSString alloc] initWithCString:newViewProps.verifyCode.c_str() encoding:NSASCIIStringEncoding];
+    }
+    if (oldViewProps.cameraNo != newViewProps.cameraNo) {
+        _cameraNo = newViewProps.cameraNo;
+    }
     [super updateProps:props oldProps:oldProps];
 }
 
@@ -59,7 +73,6 @@ using namespace facebook::react;
     if (_player == nil && _deviceSerial != nil && _cameraNo > 0) {
         _player = [EZOpenSDK createPlayerWithDeviceSerial:_deviceSerial cameraNo:_cameraNo];
         _player.delegate = self;
-        self.contentView = self;
         [_player setPlayerView:self];
         [_player startRealPlay];
     }
@@ -87,6 +100,11 @@ using namespace facebook::react;
     RCTEzvizPlayerHandleCommand(self, commandName, args);
 }
 
+- (void)updateEventEmitter:(EventEmitter::Shared const &)eventEmitter
+{
+    [super updateEventEmitter:eventEmitter];
+}
+
 - (void)player:(EZPlayer *)player didPlayFailed:(NSError *)error
 {
     if (_eventEmitter) {
@@ -100,10 +118,9 @@ using namespace facebook::react;
     }
 }
 
-
-@end
-
 Class<RCTComponentViewProtocol>EzvizPlayerCls(void)
 {
     return RCTEzvizPlayer.class;
 }
+
+@end
