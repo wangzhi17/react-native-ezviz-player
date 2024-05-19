@@ -17,7 +17,7 @@ import java.util.Map;
 import cn.wangzhi17.ezviz.player.event.OnPlayEvent;
 
 public class EzvizViewManager extends ViewGroupManager<EzvizRealPlayView> implements EzvizPlayerManagerInterface<EzvizRealPlayView> {
-    private final String Name = "RCTEzvizPlayer";
+    private final String Name = "EzvizPlayer";
     private final ViewManagerDelegate<EzvizRealPlayView> delegate;
 
     public EzvizViewManager(ReactApplicationContext context) {

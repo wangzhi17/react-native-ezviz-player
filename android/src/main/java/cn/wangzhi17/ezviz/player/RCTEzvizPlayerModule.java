@@ -18,7 +18,7 @@ import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.EZPlayer;
 
 public class RCTEzvizPlayerModule extends NativeEzvizVoiceTalkSpec implements Handler.Callback {
-    private final String Name = "EzvizPlayer";
+    private final String Name = "EzvizPlayerModule";
     private final String voiceTalkEvent = "voiceTalk";
     private final ReactApplicationContext reactContext;
 

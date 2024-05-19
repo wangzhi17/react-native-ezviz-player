@@ -20,7 +20,7 @@ export interface Spec extends TurboModule {
   removeListeners(count: Int32): void;
 }
 
-const RCTEzvizVoiceTalk = TurboModuleRegistry.get<Spec>("EzvizPlayer") as Spec;
+const RCTEzvizVoiceTalk = TurboModuleRegistry.get<Spec>("EzvizPlayerModule") as Spec;
 
 const eventEmitter = new NativeEventEmitter(RCTEzvizVoiceTalk);
 let event: EmitterSubscription;
