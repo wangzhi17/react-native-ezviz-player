@@ -14,7 +14,7 @@
 
 NSString *const VOICE_TALK_EVENT = @"VOICE_TALK_EVENT";
 
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(EzvizPlayerModule)
 
 
 - (void)addListener:(NSString *)eventName {

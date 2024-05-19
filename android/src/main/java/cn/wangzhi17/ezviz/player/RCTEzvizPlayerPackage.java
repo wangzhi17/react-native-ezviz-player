@@ -19,7 +19,7 @@ public class RCTEzvizPlayerPackage extends TurboReactPackage {
     @Nullable
     @Override
     public NativeModule getModule(@NonNull String name, @NonNull ReactApplicationContext reactApplicationContext) {
-        if ("EzvizPlayer".equals(name)) {
+        if ("EzvizPlayerModule".equals(name)) {
             return new RCTEzvizPlayerModule(reactApplicationContext);
         }
         return null;
@@ -33,10 +33,10 @@ public class RCTEzvizPlayerPackage extends TurboReactPackage {
                 final Map<String, ReactModuleInfo> moduleInfo = new HashMap<>();
                 boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
                 moduleInfo.put(
-                        "EzvizPlayer",
+                        "EzvizPlayerModule",
                         new ReactModuleInfo(
-                                "EzvizPlayer",
-                                "EzvizPlayer",
+                                "EzvizPlayerModule",
+                                "EzvizPlayerModule",
                                 false,
                                 false,
                                 false,
