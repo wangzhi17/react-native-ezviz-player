@@ -25,10 +25,12 @@ RCT_EXPORT_MODULE(EzvizPlayerModule)
     _talkPlayer = [EZOpenSDK createPlayerWithDeviceSerial:deviceSerial cameraNo:cameraNo];
     _talkPlayer.delegate = self;
     [_talkPlayer setPlayVerifyCode:verifyCode];
+    resolve(@YES);
 }
 
 - (void)destroySDK:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
     [EZOpenSDK destoryLib];
+    resolve(@YES);
 }
 
 - (void)destroyVoiceTalk:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
@@ -36,11 +38,14 @@ RCT_EXPORT_MODULE(EzvizPlayerModule)
         [_talkPlayer stopVoiceTalk];
         [EZOpenSDK releasePlayer:_talkPlayer];
         _talkPlayer = nil;
+
     }
+    resolve(@YES);
 }
 
 - (void)initSDK:(NSString *)appKey resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
     [EZOpenSDK initLibWithAppKey:appKey];
+    resolve(@YES);
 }
 
 - (void)removeListeners:(NSInteger)count {
@@ -58,6 +63,7 @@ RCT_EXPORT_MODULE(EzvizPlayerModule)
     if (_talkPlayer) {
         [_talkPlayer stopVoiceTalk];
     }
+    resolve(@YES);
 }
 
 - (NSArray<NSString *> *)supportedEvents
