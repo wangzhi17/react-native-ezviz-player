@@ -4,8 +4,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.RCTEventEmitter
 
-class OnPlayEvent(viewId: Int, private val mEventData: WritableMap) :
-    Event<OnPlayEvent>(viewId) {
+class OnPlayFailedEvent(viewId: Int, private val mEventData: WritableMap) : Event<OnPlayFailedEvent>(viewId) {
     companion object {
         const val EVENT_NAME = "onPlayFailed"
     }

@@ -14,7 +14,8 @@ import com.facebook.react.viewmanagers.EzvizPlayerManagerInterface;
 
 import java.util.Map;
 
-import cn.wangzhi17.ezviz.player.event.OnPlayEvent;
+import cn.wangzhi17.ezviz.player.event.OnLoadEvent;
+import cn.wangzhi17.ezviz.player.event.OnPlayFailedEvent;
 
 public class EzvizViewManager extends ViewGroupManager<EzvizRealPlayView> implements EzvizPlayerManagerInterface<EzvizRealPlayView> {
     private final String Name = "EzvizPlayer";
@@ -44,7 +45,8 @@ public class EzvizViewManager extends ViewGroupManager<EzvizRealPlayView> implem
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put(OnPlayEvent.EVENT_NAME, MapBuilder.of("registrationName", OnPlayEvent.EVENT_NAME))
+                .put(OnPlayFailedEvent.EVENT_NAME, MapBuilder.of("registrationName", OnPlayFailedEvent.EVENT_NAME))
+                .put(OnLoadEvent.EVENT_NAME, MapBuilder.of("registrationName", OnLoadEvent.EVENT_NAME))
                 .build();
     }
 
@@ -97,5 +99,11 @@ public class EzvizViewManager extends ViewGroupManager<EzvizRealPlayView> implem
     @Override
     public void receiveCommand(@NonNull EzvizRealPlayView root, String commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
+    }
+
+    @Override
+    protected void onAfterUpdateTransaction(@NonNull EzvizRealPlayView view) {
+        super.onAfterUpdateTransaction(view);
+        view.dispatchOnLoadEvent();
     }
 }

@@ -20,7 +20,8 @@ import com.videogo.openapi.EZConstants;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.EZPlayer;
 
-import cn.wangzhi17.ezviz.player.event.OnPlayEvent;
+import cn.wangzhi17.ezviz.player.event.OnLoadEvent;
+import cn.wangzhi17.ezviz.player.event.OnPlayFailedEvent;
 
 @SuppressLint("ViewConstructor")
 public class EzvizRealPlayView extends FrameLayout implements SurfaceHolder.Callback, Handler.Callback {
@@ -71,7 +72,7 @@ public class EzvizRealPlayView extends FrameLayout implements SurfaceHolder.Call
                     map.putString("description", errorInfo.description);
                     map.putString("sulution", errorInfo.sulution);
 
-                    dispatchEvent(new OnPlayEvent(getId(), map));
+                    dispatchEvent(new OnPlayFailedEvent(getId(), map));
                 }
                 break;
         }
@@ -180,8 +181,14 @@ public class EzvizRealPlayView extends FrameLayout implements SurfaceHolder.Call
         }
     }
 
-    private void dispatchEvent(Event<OnPlayEvent> event) {
+    private void dispatchEvent(Event<OnPlayFailedEvent> event) {
         int reactTag = getId();
         UIManagerHelper.getEventDispatcherForReactTag(reactContext, reactTag).dispatchEvent(event);
+    }
+
+    public void dispatchOnLoadEvent() {
+        WritableMap map = Arguments.createMap();
+        int reactTag = getId();
+        UIManagerHelper.getEventDispatcherForReactTag(reactContext, reactTag).dispatchEvent(new OnLoadEvent(reactTag, map));
     }
 }

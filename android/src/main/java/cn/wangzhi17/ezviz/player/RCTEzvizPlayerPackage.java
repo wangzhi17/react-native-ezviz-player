@@ -16,10 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 public class RCTEzvizPlayerPackage extends TurboReactPackage {
+
     @Nullable
     @Override
     public NativeModule getModule(@NonNull String name, @NonNull ReactApplicationContext reactApplicationContext) {
-        if ("EzvizPlayerModule".equals(name)) {
+        if (NativeEzvizVoiceTalkSpec.NAME.equals(name)) {
             return new RCTEzvizPlayerModule(reactApplicationContext);
         }
         return null;
@@ -33,10 +34,10 @@ public class RCTEzvizPlayerPackage extends TurboReactPackage {
                 final Map<String, ReactModuleInfo> moduleInfo = new HashMap<>();
                 boolean isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
                 moduleInfo.put(
-                        "EzvizPlayerModule",
+                        NativeEzvizVoiceTalkSpec.NAME,
                         new ReactModuleInfo(
-                                "EzvizPlayerModule",
-                                "EzvizPlayerModule",
+                                NativeEzvizVoiceTalkSpec.NAME,
+                                NativeEzvizVoiceTalkSpec.NAME,
                                 false,
                                 false,
                                 false,

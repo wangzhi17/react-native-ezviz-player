@@ -9,6 +9,9 @@ export type onPlayFailedEvent = {
   description: string;
   solution: string
 };
+export type onLoad = {
+
+};
 
 export interface EzvizPlayerProps extends ViewProps {
   accessToken: string;
@@ -16,6 +19,8 @@ export interface EzvizPlayerProps extends ViewProps {
   cameraNo: Int32;
   verifyCode: string;
   onPlayFailed?: DirectEventHandler<onPlayFailedEvent>;
+  onLoad?: DirectEventHandler<onLoad>;
+
 }
 
 export type EzvizPlayerType = HostComponent<EzvizPlayerProps>;

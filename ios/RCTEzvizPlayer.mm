@@ -27,12 +27,22 @@ using namespace facebook::react;
     return self;
 }
 
+- (void)layoutSubviews
+{
+    if (_eventEmitter) {
+        auto viewEventEmitter = std::static_pointer_cast<const EzvizPlayerEventEmitter >(_eventEmitter);
+        EzvizPlayerEventEmitter::OnLoad value;
+        viewEventEmitter->onLoad(value);
+    }
+}
+
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps
 {
     const auto &oldViewProps = *std::static_pointer_cast<EzvizPlayerProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<EzvizPlayerProps const>(props);
     if (oldViewProps.accessToken != newViewProps.accessToken) {
         _accessToken = [[NSString alloc] initWithCString:newViewProps.accessToken.c_str() encoding:NSASCIIStringEncoding];
+        [EZOpenSDK setAccessToken:_accessToken];
     }
     if (oldViewProps.deviceSerial != newViewProps.deviceSerial) {
         _deviceSerial = [[NSString alloc] initWithCString:newViewProps.deviceSerial.c_str() encoding:NSASCIIStringEncoding];
@@ -46,22 +56,6 @@ using namespace facebook::react;
     [super updateProps:props oldProps:oldProps];
 }
 
-- (void)setDeviceSerial:(NSString *) deviceSerial {
-    _deviceSerial = deviceSerial;
-}
-
-- (void)setCameraNo:(NSInteger) cameraNo {
-    _cameraNo = cameraNo;
-}
-
-- (void)setVerifyCode:(NSString *) verifyCode {
-    _verifyCode = verifyCode;
-}
-
-- (void)setAccessToken:(NSString *) accessToken {
-  _accessToken = accessToken;
-  [EZOpenSDK setAccessToken:accessToken];
-}
 
 - (void)closeSound {
     if (_player) {
@@ -109,7 +103,7 @@ using namespace facebook::react;
 {
     if (_eventEmitter) {
         auto viewEventEmitter = std::static_pointer_cast<const EzvizPlayerEventEmitter >(_eventEmitter);
-        facebook::react::EzvizPlayerEventEmitter::OnPlayFailed data = {
+        EzvizPlayerEventEmitter::OnPlayFailed data = {
             .errorCode = int(error.code),
             .solution = std::string([[error.userInfo valueForKey:@"ezvizErrorSolution"] UTF8String]),
             .description = std::string([[error.userInfo valueForKey:@"NSLocalizedDescription"] UTF8String] )
