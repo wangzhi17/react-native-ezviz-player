@@ -105,6 +105,13 @@ public class EzvizRealPlayView extends FrameLayout implements SurfaceHolder.Call
     }
 
     public void setDeviceSerial(String deviceSerial) {
+        if (mDeviceSerial != null && !mDeviceSerial.equals(deviceSerial)) {
+            releasePlayer();
+            mEZPlayer = EZOpenSDK.getInstance().createPlayer(deviceSerial, mCameraNo);
+            mEZPlayer.setHandler(mHandler);
+            mEZPlayer.setSurfaceHold(surfaceView.getHolder());
+            beforeStartRealPlay();
+        }
         mDeviceSerial = deviceSerial;
     }
 

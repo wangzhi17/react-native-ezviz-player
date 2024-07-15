@@ -44,14 +44,17 @@ using namespace facebook::react;
         _accessToken = [[NSString alloc] initWithCString:newViewProps.accessToken.c_str() encoding:NSASCIIStringEncoding];
         [EZOpenSDK setAccessToken:_accessToken];
     }
-    if (oldViewProps.deviceSerial != newViewProps.deviceSerial) {
-        _deviceSerial = [[NSString alloc] initWithCString:newViewProps.deviceSerial.c_str() encoding:NSASCIIStringEncoding];
-    }
+
     if (oldViewProps.verifyCode != newViewProps.verifyCode) {
         _verifyCode = [[NSString alloc] initWithCString:newViewProps.verifyCode.c_str() encoding:NSASCIIStringEncoding];
     }
     if (oldViewProps.cameraNo != newViewProps.cameraNo) {
         _cameraNo = newViewProps.cameraNo;
+    }
+    if (oldViewProps.deviceSerial != newViewProps.deviceSerial) {
+        [self releasePlayer];
+        _deviceSerial = [[NSString alloc] initWithCString:newViewProps.deviceSerial.c_str() encoding:NSASCIIStringEncoding];
+        [self createPlayer];
     }
     [super updateProps:props oldProps:oldProps];
 }
@@ -67,6 +70,7 @@ using namespace facebook::react;
     if (_player == nil && _deviceSerial != nil && _cameraNo > 0) {
         _player = [EZOpenSDK createPlayerWithDeviceSerial:_deviceSerial cameraNo:_cameraNo];
         _player.delegate = self;
+        [_player setPlayVerifyCode:_verifyCode];
         [_player setPlayerView:self];
         [_player startRealPlay];
     }
@@ -103,10 +107,13 @@ using namespace facebook::react;
 {
     if (_eventEmitter) {
         auto viewEventEmitter = std::static_pointer_cast<const EzvizPlayerEventEmitter >(_eventEmitter);
+        NSString *solution = error.userInfo[@"ezvizErrorSolution"] ? error.userInfo[@"ezvizErrorSolution"] : @"";
+        NSString *description = error.userInfo[@"NSLocalizedDescription"] ? error.userInfo[@"NSLocalizedDescription"] : @"";
+
         EzvizPlayerEventEmitter::OnPlayFailed data = {
             .errorCode = int(error.code),
-            .solution = std::string([[error.userInfo valueForKey:@"ezvizErrorSolution"] UTF8String]),
-            .description = std::string([[error.userInfo valueForKey:@"NSLocalizedDescription"] UTF8String] )
+            .solution = std::string([solution UTF8String]),
+            .description = std::string([description UTF8String] )
         };
         viewEventEmitter->onPlayFailed(data);
     }
