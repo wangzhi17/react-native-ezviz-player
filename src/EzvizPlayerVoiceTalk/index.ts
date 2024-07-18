@@ -2,8 +2,8 @@ import RCTEzvizVoiceTalk, { addListener, removeAllListeners, voiceTalkEvent } fr
 import { Int32 } from "react-native/Libraries/Types/CodegenTypes";
 
 const EzvizPlayerVoiceTalk = {
-    async initSDK(appKey: string) {
-        return await RCTEzvizVoiceTalk.initSDK(appKey);
+    async initSDK(appKey: string, apiUrl?: string) {
+        return await RCTEzvizVoiceTalk.initSDK(appKey, apiUrl);
     },
     async destroySDK() {
         return await RCTEzvizVoiceTalk.destroySDK();

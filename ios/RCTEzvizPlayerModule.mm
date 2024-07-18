@@ -42,8 +42,12 @@ RCT_EXPORT_MODULE(EzvizPlayerModule)
     }
     resolve(@YES);
 }
-
-- (void)initSDK:(NSString *)appKey resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)initSDK:(NSString *)appKey apiUrl:(NSString *)apiUrl resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject{
+    if (apiUrl) {
+        [EZOpenSDK initLibWithAppKey:appKey url:apiUrl authUrl:@""];
+        resolve(@YES);
+        return;
+    }
     [EZOpenSDK initLibWithAppKey:appKey];
     resolve(@YES);
 }

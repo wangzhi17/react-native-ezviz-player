@@ -3,7 +3,7 @@ import { EmitterSubscription, NativeEventEmitter, TurboModuleRegistry } from "re
 import { Int32 } from "react-native/Libraries/Types/CodegenTypes";
 
 export interface Spec extends TurboModule {
-  initSDK(appKey: string): Promise<boolean>;
+  initSDK(appKey: string, apiUrl?: string): Promise<boolean>;
 
   destroySDK(): Promise<boolean>;
 

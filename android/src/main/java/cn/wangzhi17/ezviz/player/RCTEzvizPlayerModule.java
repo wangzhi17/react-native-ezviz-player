@@ -3,6 +3,7 @@ package cn.wangzhi17.ezviz.player;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.videogo.errorlayer.ErrorInfo;
 import com.videogo.openapi.EZConstants;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.EZPlayer;
+import com.videogo.openapi.EzvizAPI;
 
 public class RCTEzvizPlayerModule extends NativeEzvizVoiceTalkSpec implements Handler.Callback {
   private final String Name = "EzvizPlayerModule";
@@ -33,9 +35,12 @@ public class RCTEzvizPlayerModule extends NativeEzvizVoiceTalkSpec implements Ha
   }
 
   @Override
-  public void initSDK(String appKey, Promise promise) {
+  public void initSDK(String appKey, @Nullable String apiUrl, Promise promise) {
     Application application = (Application) reactContext.getBaseContext();
     EZOpenSDK.initLib(application, appKey);
+    if (!TextUtils.isEmpty(apiUrl)) {
+      EzvizAPI.getInstance().setServerUrl(apiUrl, "");
+    }
     promise.resolve(true);
   }
 
